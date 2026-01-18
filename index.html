@@ -3,188 +3,406 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spider Cursor Animasyonu</title>
+    <title>Genel Kimya I - Tam Kapsamlı Final Çalışması</title>
+    
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    
     <style>
-        /* Sayfa ayarları - Tam ekran siyah arka plan */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --primary: #4f46e5;
+            --secondary: #4338ca;
+            --accent: #f59e0b;
+            --bg-color: #f3f4f6;
+            --card-bg: #ffffff;
+            --text-dark: #111827;
+            --text-gray: #4b5563;
+            --border-color: #e5e7eb;
+            --success-bg: #d1fae5;
+            --success-text: #065f46;
+            --warning-bg: #fffbeb;
+            --warning-text: #92400e;
         }
 
-        body {
-            overflow: hidden; /* Kaydırma çubuklarını gizle */
-            background-color: #000000; /* Siyah Arka Plan */
-        }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-color); color: var(--text-dark); margin: 0; line-height: 1.6; }
+        
+        header { background: linear-gradient(120deg, var(--primary), var(--secondary)); color: white; padding: 4rem 1rem; text-align: center; }
+        header h1 { font-size: 2.5rem; margin: 0; font-weight: 800; letter-spacing: -0.05rem; }
+        header p { font-size: 1.1rem; opacity: 0.9; margin-top: 1rem; max-width: 700px; margin: 0 auto; }
 
-        canvas {
-            display: block;
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
+        .container { max-width: 1000px; margin: -40px auto 4rem; padding: 0 1rem; position: relative; z-index: 10; }
+
+        .category-nav { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 2rem; }
+        .nav-btn { background: white; border: 1px solid var(--border-color); padding: 10px 20px; border-radius: 99px; font-weight: 600; color: var(--text-gray); text-decoration: none; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .nav-btn:hover { background: var(--primary); color: white; border-color: var(--primary); transform: translateY(-2px); }
+
+        .card { background: var(--card-bg); border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); margin-bottom: 2rem; overflow: hidden; border: 1px solid var(--border-color); }
+        .card-header { background: #f9fafb; padding: 1.5rem; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        
+        .topic-badge { background: var(--primary); color: white; font-size: 0.75rem; padding: 4px 12px; border-radius: 99px; font-weight: 700; text-transform: uppercase; }
+
+        .question-text { font-size: 1.1rem; font-weight: 600; color: var(--text-dark); margin: 0; flex: 1; }
+        .card-body { padding: 2rem; }
+
+        .solution-step { margin-bottom: 1.5rem; padding-left: 1.5rem; border-left: 3px solid var(--border-color); position: relative; }
+        .step-title { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-gray); font-weight: 700; margin-bottom: 0.5rem; display: block; }
+
+        .box-warning { background: var(--warning-bg); border: 1px solid #fcd34d; color: var(--warning-text); padding: 1rem; border-radius: 8px; margin: 1rem 0; font-size: 0.95rem; }
+        .box-result { background: var(--success-bg); border: 1px solid #6ee7b7; color: var(--success-text); padding: 1.5rem; border-radius: 8px; margin-top: 1.5rem; font-weight: 700; text-align: center; font-size: 1.2rem; }
+        .formula-box { background: #f1f5f9; padding: 1rem; border-radius: 6px; font-family: 'Fira Code', monospace; margin: 0.5rem 0; border-left: 4px solid var(--accent); }
+
+        table.nomen { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        table.nomen th, table.nomen td { border: 1px solid #e5e7eb; padding: 10px; text-align: left; }
+        table.nomen th { background: #f9fafb; }
+
+        footer { text-align: center; padding: 3rem; color: var(--text-gray); font-size: 0.9rem; border-top: 1px solid var(--border-color); }
+        @media (max-width: 768px) { header h1 { font-size: 1.8rem; } .card-body { padding: 1.5rem; } }
     </style>
 </head>
 <body>
 
-    <canvas id="canvas1"></canvas>
+<header>
+    <h1>🧪 Genel Kimya I - Tam Kapsamlı Final Çalışması</h1>
+    <p>Tüm PDF kaynaklarındaki soruların birleştirilmiş, detaylı ve adım adım çözümleri.</p>
+</header>
 
-    <script>
-        const canvas = document.getElementById('canvas1');
-        const ctx = canvas.getContext('2d');
+<div class="container">
+    <div class="category-nav">
+        <a href="#stokiyometri" class="nav-btn">Stokiyometri & Gazlar</a>
+        <a href="#denge" class="nav-btn">Denge & Çözeltiler</a>
+        <a href="#asitbaz" class="nav-btn">Asit-Baz & Titrasyon</a>
+        <a href="#atom" class="nav-btn">Atom & Adlandırma</a>
+        <a href="#elektro" class="nav-btn">Elektrokimya</a>
+    </div>
 
-        // Canvas boyutunu tam ekran yap
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+    <div id="stokiyometri">
+        <h2 style="color:var(--primary); border-bottom: 2px solid #e5e7eb; padding-bottom:10px;">📉 Stokiyometri ve Gazlar</h2>
 
-        let particlesArray;
+        <div class="card">
+            <div class="card-header">
+                [cite_start]<span class="question-text">Soru 1: İyon Derişimleri [cite: 4]</span>
+                <span class="topic-badge">Stokiyometri</span>
+            </div>
+            <div class="card-body">
+                <p><strong>Soru:</strong> 0,0165 M $Al_{2}(SO_{4})_{3}(aq)$ çözeltisinde aluminyum ve sülfat iyonları derişimleri nedir?</p>
+                <div class="solution-step">
+                    <span class="step-title">Adım 1: İyonlaşma</span>
+                    <div class="formula-box">$$ Al_2(SO_4)_3 \rightarrow 2Al^{3+} + 3SO_4^{2-} $$</div>
+                </div>
+                <div class="solution-step">
+                    <span class="step-title">Adım 2: Hesaplama</span>
+                    <p>$[Al^{3+}] = 2 \times 0,0165 = 0,0330 \, M$</p>
+                    <p>$[SO_4^{2-}] = 3 \times 0,0165 = 0,0495 \, M$</p>
+                </div>
+                <div class="box-result">Cevap: $Al^{3+}=0,0330 M$, $SO_4^{2-}=0,0495 M$</div>
+            </div>
+        </div>
 
-        // Fare pozisyonunu takip etme
-        let mouse = {
-            x: null,
-            y: null,
-            radius: (canvas.height / 80) * (canvas.width / 80) // Etkileşim yarıçapı
-        }
+        <div class="card">
+            <div class="card-header">
+                [cite_start]<span class="question-text">Soru 12: Sınırlayıcı Bileşen ($P_4 + Cl_2$) [cite: 81-85]</span>
+                <span class="topic-badge">Zor</span>
+            </div>
+            <div class="card-body">
+                <p><strong>Soru:</strong> $P_4(k) + 6Cl_2(g) \rightarrow 4PCl_3(s)$. 323 g $Cl_2$ ve 125 g $P_4$ tepkimesinden kaç gram $PCl_3$ oluşur?</p>
+                <div class="solution-step">
+                    <span class="step-title">Adım 1: Mol Hesabı</span>
+                    <p>$n_{P_4} = 125 / 124 \approx 1,008 \, mol$.</p>
+                    <p>$n_{Cl_2} = 323 / 71 \approx 4,549 \, mol$.</p>
+                </div>
+                <div class="solution-step">
+                    <span class="step-title">Adım 2: Sınırlayıcı Tayini</span>
+                    <p>1 mol $P_4$ için 6 mol $Cl_2$ gerekir. Elimizde $1.008$ mol $P_4$ var, bu yüzden $1.008 \times 6 = 6.048$ mol $Cl_2$ lazım. Fakat elimizde sadece $4.549$ mol $Cl_2$ var.</p>
+                    <div class="box-warning">Sonuç: $Cl_2$ (Klor) sınırlayıcıdır, erken biter. Hesap $Cl_2$'ye göre yapılır.</div>
+                </div>
+                <div class="solution-step">
+                    <span class="step-title">Adım 3: Ürün Hesabı</span>
+                    <p>Denklemde 6 mol $Cl_2$'den 4 mol ürün çıkar (oran 2/3).</p>
+                    <p>$n_{urun} = 4,549 \times (4/6) = 3,033 \, mol$.</p>
+                    <p>Kütle ($MA_{PCl_3} = 137.5$): $3,033 \times 137.5 \approx 417 \, g$.</p>
+                </div>
+                <div class="box-result">Cevap: ~417 g $PCl_3$</div>
+            </div>
+        </div>
 
-        // Fare hareket ettiğinde koordinatları al
-        window.addEventListener('mousemove',
-            function(event) {
-                mouse.x = event.x;
-                mouse.y = event.y;
-            }
-        );
+        <div class="card">
+            <div class="card-header">
+                [cite_start]<span class="question-text">Soru 5: Glikoz Yanması ve Gaz Hacmi [cite: 11, 12]</span>
+                <span class="topic-badge">Gazlar</span>
+            </div>
+            <div class="card-body">
+                <p><strong>Soru:</strong> $37^{\circ}C$ ve 1.0 atm basınçta 5.60 g glikoz ($C_6H_{12}O_6$) yandığında oluşan $CO_2$ hacmi?</p>
+                <div class="solution-step">
+                    <span class="step-title">Adım 1: Mol ve Oran</span>
+                    <p>Glikoz Molü: $5,60 / 180 = 0,0311$ mol.</p>
+                    <p>Tepkime: $C_6H_{12}O_6 + 6O_2 \rightarrow 6CO_2 + 6H_2O$.</p>
+                    <p>$CO_2$ Molü: $0,0311 \times 6 = 0,1866$ mol.</p>
+                </div>
+                <div class="solution-step">
+                    <span class="step-title">Adım 2: PV=nRT</span>
+                    <p>$V = \frac{0,1866 \times 0,08206 \times (37+273)}{1} \approx 4,75$ Litre.</p>
+                </div>
+                <div class="box-result">Cevap: 4,75 L</div>
+            </div>
+        </div>
 
-        // Parçacık (Nokta) Sınıfı
-        class Particle {
-            constructor(x, y, directionX, directionY, size, color) {
-                this.x = x;
-                this.y = y;
-                this.directionX = directionX;
-                this.directionY = directionY;
-                this.size = size;
-                this.color = color;
-            }
+        <div class="card">
+            <div class="card-header">
+                [cite_start]<span class="question-text">Soru 6: Tepkime Stokiyometrisi ($NH_3$ Eldesi) [cite: 71, 72]</span>
+                <span class="topic-badge">Stokiyometri</span>
+            </div>
+            <div class="card-body">
+                <p><strong>Soru:</strong> $Ce_{2}O_{3}+NH_{4}Cl \rightarrow CeCl_{3}+H_{2}O+NH_{3}$. 8.94 mol su oluştuğunda kaç gram amonyak elde edilir?</p>
+                <div class="solution-step">
+                    <span class="step-title">Adım 1: Denkleştirme</span>
+                    <p>$Ce_2O_3 + 6NH_4Cl \rightarrow 2CeCl_3 + 3H_2O + 6NH_3$.</p>
+                    <p>Su ile Amonyak oranı 3'e 6 (yani 1'e 2).</p>
+                </div>
+                <div class="solution-step">
+                    <span class="step-title">Adım 2: Hesap</span>
+                    <p>$n_{NH_3} = 8,94 \times 2 = 17,88$ mol.</p>
+                    <p>$m = 17,88 \times 17 \approx 304$ g.</p>
+                </div>
+                <div class="box-result">Cevap: ~304 g Amonyak</div>
+            </div>
+        </div>
 
-            // Parçacığı çizme fonksiyonu
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-                ctx.fillStyle = '#ffffff'; // Nokta rengi (Beyaz)
-                ctx.fill();
-            }
+        <div class="card">
+            <div class="card-header">
+                [cite_start]<span class="question-text">Soru 5: Etilen Yanması [cite: 70]</span>
+                <span class="topic-badge">Stokiyometri</span>
+            </div>
+            <div class="card-body">
+                <p><strong>Soru:</strong> 2.12 mol etilen ($C_2H_4$) yanarsa kaç gram su oluşur?</p>
+                <div class="solution-step">
+                    <p>Denklem: $C_2H_4 + 3O_2 \rightarrow 2CO_2 + 2H_2O$. (1'e 2 oran)</p>
+                    <p>Su Molü: $2.12 \times 2 = 4.24$ mol.</p>
+                    <p>Kütle: $4.24 \times 18 = 76.32$ g.</p>
+                </div>
+                <div class="box-result">Cevap: 76.32 g $H_2O$</div>
+            </div>
+        </div>
 
-            // Parçacık hareketi ve kenar kontrolü
-            update() {
-                // Ekran sınırlarına çarpınca yön değiştir
-                if (this.x > canvas.width || this.x < 0) {
-                    this.directionX = -this.directionX;
-                }
-                if (this.y > canvas.height || this.y < 0) {
-                    this.directionY = -this.directionY;
-                }
+        <div class="card">
+            <div class="card-header">
+                [cite_start]<span class="question-text">Soru 8: Kısmi Basınçlar [cite: 15, 16]</span>
+                <span class="topic-badge">Gazlar</span>
+            </div>
+            <div class="card-body">
+                <p><strong>Soru:</strong> Toplam P = 1,05 atm. %15,1 $O_2$, %4,8 $CO_2$, %75 $N_2$, %5,1 $H_2O$. mmHg cinsinden basınçlar?</p>
+                <div class="solution-step">
+                    <p>Formül: $P_{gaz} = \% \times 1,05 \times 760$.</p>
+                    <ul>
+                        <li>$O_2$: 120,5 mmHg</li>
+                        <li>$CO_2$: 38,3 mmHg</li>
+                        <li>$N_2$: 598,5 mmHg</li>
+                        <li>$H_2O$: 40,7 mmHg</li>
+                    </ul>
+                </div>
+                <div class="box-result">Sonuçlar yukarıdadır.</div>
+            </div>
+        </div>
+    </div>
 
-                // Fare ile etkileşim (Kaçış efekti veya çekim)
-                // Bu kısım fareye yaklaştığında noktaların hafifçe hareket etmesini sağlar
-                let dx = mouse.x - this.x;
-                let dy = mouse.y - this.y;
-                let distance = Math.sqrt(dx * dx + dy * dy);
+    <div id="denge">
+        <h2 style="color:var(--primary); border-bottom: 2px solid #e5e7eb; padding-bottom:10px;">⚖️ Denge ve Çözeltiler</h2>
 
-                if (distance < mouse.radius + this.size) {
-                    if (mouse.x < this.x && this.x < canvas.width - this.size * 10) {
-                        this.x += 3;
-                    }
-                    if (mouse.x > this.x && this.x > this.size * 10) {
-                        this.x -= 3;
-                    }
-                    if (mouse.y < this.y && this.y < canvas.height - this.size * 10) {
-                        this.y += 3;
-                    }
-                    if (mouse.y > this.y && this.y > this.size * 10) {
-                        this.y -= 3;
-                    }
-                }
-                
-                // Normal hareket
-                this.x += this.directionX;
-                this.y += this.directionY;
-                
-                this.draw();
-            }
-        }
+        <div class="card">
+            <div class="card-header">
+                [cite_start]<span class="question-text">Soru 2: Denge ve Ayrışma ($N_2O_4$) [cite: 5-8]</span>
+                <span class="topic-badge">Denge</span>
+            </div>
+            <div class="card-body">
+                <p><strong>Soru:</strong> $N_{2}O_{4} \rightleftharpoons 2NO_{2}$. Başlangıç 0,0240 mol/0,372L, $K_c=4,61\times10^{-3}$. Ayrışma %?</p>
+                <div class="solution-step">
+                    <span class="step-title">Adım 1: Başlangıç Derişimi</span>
+                    <p>$M = 0,0240 / 0,372 \approx 0,0645 \, M$.</p>
+                </div>
+                <div class="solution-step">
+                    <span class="step-title">Adım 2: ICE Tablosu ve Çözüm</span>
+                    <p>$K_c = (2x)^2 / (0,0645-x)$. İkinci dereceden denklem çözülürse $x \approx 0,00806$.</p>
+                    <p>Ayrışma yüzdesi: $(0,00806 / 0,0645) \times 100 \approx \%12,5$.</p>
+                </div>
+                <div class="box-result">Cevap: %12,5</div>
+            </div>
+        </div>
 
-        // Parçacıkları oluşturma fonksiyonu
-        function init() {
-            particlesArray = [];
-            let numberOfParticles = (canvas.height * canvas.width) / 9000; // Yoğunluk ayarı
-            
-            for (let i = 0; i < numberOfParticles; i++) {
-                let size = (Math.random() * 3) + 1; // Nokta boyutu
-                let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
-                let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
-                let directionX = (Math.random() * 2) - 1; // Hız X
-                let directionY = (Math.random() * 2) - 1; // Hız Y
-                let color = '#ffffff';
+        <div class="card">
+            <div class="card-header">
+                [cite_start]<span class="question-text">Soru 10: Buharlaşma ve Derişim [cite: 78, 79]</span>
+                <span class="topic-badge">Çözeltiler</span>
+            </div>
+            <div class="card-body">
+                <p><strong>Soru:</strong> 275 mL 0,105 M NaCl buharlaşarak 237 mL'ye düşüyor. Yeni molarite?</p>
+                <div class="solution-step">
+                    <p>$M_1 V_1 = M_2 V_2$</p>
+                    <p>$0,105 \times 275 = M_2 \times 237$</p>
+                    <p>$M_2 \approx 0,122 \, M$</p>
+                </div>
+                <div class="box-result">Cevap: 0,122 M</div>
+            </div>
+        </div>
 
-                particlesArray.push(new Particle(x, y, directionX, directionY, size, color));
-            }
-        }
+        <div class="card">
+            <div class="card-header">
+                [cite_start]<span class="question-text">Soru 2: Çözünürlük ve Süzme [cite: 58]</span>
+                <span class="topic-badge">Teorik</span>
+            </div>
+            <div class="card-body">
+                <p><strong>Soru:</strong> Fe2O3, NaCl, KNO3, Al(NO3)3 suda çözülüp süzülüyor. Kağıtta ne kalır?</p>
+                <div class="solution-step">
+                    <p>Nitratlar ve Sodyum tuzları suda iyi çözünür. $Fe_2O_3$ (Demir oksit/Pas) suda çözünmez ve filtre kağıdında kalır.</p>
+                </div>
+                <div class="box-result">Cevap: $Fe_2O_3$</div>
+            </div>
+        </div>
+    </div>
 
-        // Noktalar arası çizgileri (örümcek ağını) çizen fonksiyon
-        function connect() {
-            let opacityValue = 1;
-            for (let a = 0; a < particlesArray.length; a++) {
-                for (let b = a; b < particlesArray.length; b++) {
-                    let distance = ((particlesArray[a].x - particlesArray[b].x) * (particlesArray[a].x - particlesArray[b].x)) + 
-                                   ((particlesArray[a].y - particlesArray[b].y) * (particlesArray[a].y - particlesArray[b].y));
-                    
-                    // Eğer noktalar birbirine yakınsa çizgi çek
-                    if (distance < (canvas.width/7) * (canvas.height/7)) {
-                        opacityValue = 1 - (distance / 20000);
-                        ctx.strokeStyle = 'rgba(255, 255, 255,' + opacityValue + ')'; // Çizgi rengi
-                        ctx.lineWidth = 1;
-                        ctx.beginPath();
-                        ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
-                        ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
-                        ctx.stroke();
-                    }
-                }
-            }
-        }
+    <div id="asitbaz">
+        <h2 style="color:var(--primary); border-bottom: 2px solid #e5e7eb; padding-bottom:10px;">🧪 Asit-Baz ve Titrasyon</h2>
 
-        // Animasyon döngüsü
-        function animate() {
-            requestAnimationFrame(animate);
-            ctx.clearRect(0, 0, innerWidth, innerHeight); // Ekranı temizle
+        <div class="card">
+            <div class="card-header">
+                [cite_start]<span class="question-text">Soru 4: Tuz Hidrolizi pH [cite: 10]</span>
+                <span class="topic-badge">Asit-Baz</span>
+            </div>
+            <div class="card-body">
+                <p><strong>Soru:</strong> 0,1 M NaF çözeltisinin pH'ı? ($K_a(HF)=6,6\times10^{-4}$)</p>
+                <div class="solution-step">
+                    <span class="step-title">Adım 1: Kb Bul</span>
+                    <p>Ortam baziktir ($F^-$ hidrolizi). $K_b = 10^{-14} / K_a \approx 1,51\times10^{-11}$.</p>
+                </div>
+                <div class="solution-step">
+                    <span class="step-title">Adım 2: pH Hesapla</span>
+                    <p>$[OH^-] = \sqrt{K_b \times 0,1} \approx 1,23\times10^{-6}$.</p>
+                    <p>$pOH = 5,91 \rightarrow pH = 8,09$.</p>
+                </div>
+                <div class="box-result">Cevap: pH = 8,09</div>
+            </div>
+        </div>
 
-            for (let i = 0; i < particlesArray.length; i++) {
-                particlesArray[i].update();
-            }
-            connect(); // Çizgileri bağla
-        }
+        <div class="card">
+            <div class="card-header">
+                [cite_start]<span class="question-text">Soru 11: Titrasyon ($H_2SO_4$ vs NaOH) [cite: 80]</span>
+                <span class="topic-badge">Titrasyon</span>
+            </div>
+            <div class="card-body">
+                <p><strong>Soru:</strong> 10 mL 0.2 M $H_2SO_4$ için 25 mL NaOH gerekiyor. Bazın molaritesi?</p>
+                <div class="solution-step">
+                    <span class="step-title">Dikkat</span>
+                    <div class="box-warning">$H_2SO_4$ iki değerliklidir (Tesir değerliği = 2).</div>
+                </div>
+                <div class="solution-step">
+                    <span class="step-title">Hesap</span>
+                    <p>$(2 \times 0.2) \times 10 = (1 \times M_{baz}) \times 25$.</p>
+                    <p>$4 = 25 \times M_{baz} \rightarrow M_{baz} = 0,16 \, M$.</p>
+                </div>
+                <div class="box-result">Cevap: 0,16 M NaOH</div>
+            </div>
+        </div>
+    </div>
 
-        // Ekran boyutu değişirse canvas'ı güncelle
-        window.addEventListener('resize', 
-            function(){
-                canvas.width = innerWidth;
-                canvas.height = innerHeight;
-                mouse.radius = ((canvas.height/80) * (canvas.height/80));
-                init();
-            }
-        );
+    <div id="atom">
+        <h2 style="color:var(--primary); border-bottom: 2px solid #e5e7eb; padding-bottom:10px;">⚛️ Atom Modelleri ve İsimlendirme</h2>
 
-        // Fare ekrandan çıkarsa
-        window.addEventListener('mouseout',
-            function(){
-                mouse.x = undefined;
-                mouse.y = undefined;
-            }
-        );
+        <div class="card">
+            <div class="card-header">
+                [cite_start]<span class="question-text">Soru 3 & 16: Lewis Yapıları ($ClO_3^-$ ve $NO_3^-$) [cite: 9, 45-53]</span>
+                <span class="topic-badge">Lewis</span>
+            </div>
+            <div class="card-body">
+                <div class="solution-step">
+                    <span class="step-title">$ClO_3^-$ (Klorat İyonu)</span>
+                    <p>Merkez Cl, 3 tane O bağlı, 1 tane ortaklanmamış elektron çifti var. Geometri: <strong>Üçgen Piramit</strong>. Formal yük (en kararlı): 0.</p>
+                </div>
+                <div class="solution-step">
+                    <span class="step-title">$NO_3^-$ (Nitrat İyonu)</span>
+                    <p>Düzlem üçgen yapı. Bağ açısı 120 derece. Hibritleşme $sp^2$. Rezonans gösterir.</p>
+                </div>
+            </div>
+        </div>
 
-        init();
-        animate();
+        <div class="card">
+            <div class="card-header">
+                [cite_start]<span class="question-text">Soru 3 & 4: Bileşik İsimlendirme [cite: 59-69]</span>
+                <span class="topic-badge">Nomenklatür</span>
+            </div>
+            <div class="card-body">
+                <table class="nomen">
+                    <tr><th>Bileşik / İsim</th><th>Cevap</th></tr>
+                    <tr><td>Sülfür diflorür</td><td>$SF_2$</td></tr>
+                    <tr><td>Potasyum iyodür</td><td>$KI$</td></tr>
+                    <tr><td>Kobalt (II) asetat</td><td>$Co(CH_3COO)_2$</td></tr>
+                    <tr><td>Tetrafosfor pentoksit</td><td>$P_4O_5$</td></tr>
+                    <tr><td>$Pb(C_2H_3O_2)_2$</td><td>Kurşun (II) asetat</td></tr>
+                    <tr><td>$Fe_2O_3$</td><td>Demir (III) oksit</td></tr>
+                    <tr><td>$BaBr_2$</td><td>Baryum bromür</td></tr>
+                    <tr><td>$N_2O$</td><td>Azot protoksit (Dinitrojen monoksit)</td></tr>
+                    <tr><td>$CaCl_2 \cdot 6H_2O$</td><td>Kalsiyum klorür hekzahidrat</td></tr>
+                </table>
+            </div>
+        </div>
 
-    </script>
+        <div class="card">
+            <div class="card-header">
+                [cite_start]<span class="question-text">Soru 1: Tepkime Denkleştirme [cite: 54-57]</span>
+                <span class="topic-badge">Denkleştirme</span>
+            </div>
+            <div class="card-body">
+                <p>a) $2KCrO_2 + 3H_2O_2 + 2KOH \rightarrow 2K_2CrO_4 + 4H_2O$</p>
+                <p>b) $Al_2O_3 + 6HNO_3 \rightarrow 2Al(NO_3)_3 + 3H_2O$</p>
+                <p>c) $2Al(NO_3)_3 + 3H_2SO_4 \rightarrow Al_2(SO_4)_3 + 6HNO_3$</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                [cite_start]<span class="question-text">Soru 7, 8, 9: Teorik Bilgiler [cite: 73-77]</span>
+                <span class="topic-badge">Teorik</span>
+            </div>
+            <div class="card-body">
+                <p><strong>Keşif Sırası:</strong> Elektron $\rightarrow$ Proton $\rightarrow$ Nötron.</p>
+                <p><strong>Sabit Oranlar Yasası:</strong> Proust (Elementler kütlece sabit oranda birleşir).</p>
+                <p><strong>Yarıçap:</strong> Anyonlar ($N^{3-}$) nötr atomdan büyüktür. Katyonlar ($Mg^{2+}$) nötr atomdan küçüktür.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="elektro">
+        <h2 style="color:var(--primary); border-bottom: 2px solid #e5e7eb; padding-bottom:10px;">⚡ Elektrokimya</h2>
+
+        <div class="card">
+            <div class="card-header">
+                [cite_start]<span class="question-text">Soru 7: Kçç ve Pil Potansiyeli [cite: 14]</span>
+                <span class="topic-badge">Elektrokimya</span>
+            </div>
+            <div class="card-body">
+                <p><strong>Soru:</strong> Ag elektrotla $AgI$ süspansiyonunda $E_{pil}=0,417 V$. $K_{çç}$ nedir?</p>
+                <div class="solution-step">
+                    <span class="step-title">Çözüm</span>
+                    <p>Nernst eşitliği ile $[Ag^+]$ bulunur: $\log [Ag^+] \approx -7,04$.</p>
+                    <p>$K_{çç} = [Ag^+][I^-] = (10^{-7,04})^2 \approx 8,3 \times 10^{-15}$.</p>
+                </div>
+                <div class="box-result">Cevap: $8,3 \times 10^{-15}$</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<footer>
+    <p>⚡ Başarılar! EEM Mühendisliği yolunda bu kimya finali sadece küçük bir engel.</p>
+</footer>
+
 </body>
 </html>
